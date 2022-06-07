@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="3e688450-9e4b-4001-beb3-ea1c9165acb9" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<configuration doc:name="Configuration" doc:id="17d92c89-480f-48c2-b948-6e8a296cffad" defaultErrorHandler-ref="globallevelerrorhandlingError_Handler" />
+	<flow name="globallevelerrorhandlingFlow" doc:id="b3e7d722-d343-4dfc-9ac6-fcd853ef3502" >
+		<http:listener doc:name="Listener" doc:id="fc487afd-79ce-450d-a813-c05c9204a53a" config-ref="HTTP_Listener_config" path="/test"/>
+		<logger level="INFO" doc:name="Logger" doc:id="eaf9a588-cc7e-4168-a4c2-2243f4b77732" message="start flow"/>
+		<validation:is-null doc:id="df930f81-0b09-40ca-bfa6-53738e6731db" value="#[payload]"/>
+		<set-payload value="i am ali bhai" doc:name="Set Payload" doc:id="b57c90f8-415f-486b-b9af-089987a71400" />
+		<logger level="INFO" doc:name="Logger" doc:id="8020c336-d889-4fd4-82fb-694d2ed7fd1d" message="end flow"/>
+	</flow>
+	<error-handler name="globallevelerrorhandlingError_Handler" doc:id="59304e3a-feed-456e-8663-903a287bd584" >
+		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="817f6653-4800-4934-8d89-2b2e0adaece2" >
+			<logger level="INFO" doc:name="Logger" doc:id="97f1b65b-a1cd-4a9d-a5bc-faebba7cc592" />
+			<set-payload value="i am azirul bhai" doc:name="Set Payload" doc:id="f580c82d-9959-4c99-b4ea-0a86aa66e3b4" />
+			<logger level="INFO" doc:name="Logger" doc:id="e1f1473e-edc6-4afb-9bba-eaabb232d071" />
+		</on-error-continue>
+	</error-handler>
+</mule>
